@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "template": {
+    "module": "../templates/changelog.tsx",
+    "id": "trellis.Changelog",
+    "version": "1.0.0",
+    "sha256": "2d87cb8819ebebf8c4bbf54a7540490a21d41d9fc97cb893dbe5a277bda467b1"
+  },
+  "values": {
+    "product": "Trellis",
+    "intro": "Release notes for teams trying the new board library.",
+    "email": "https://trellis.example/notes/subscribe",
+    "rss": "https://trellis.example/notes/feed.xml",
+    "social": "https://trellis.example/community",
+    "handle": "@trellis",
+    "releases": [
+      {
+        "type": "notice",
+        "date": "2026-08-24",
+        "version": "1.1.1",
+        "title": "Saved boards are moving",
+        "summary": "On 31 August, saved boards move into the Library tab. Your team keeps access through its existing links."
+      },
+      {
+        "type": "feature",
+        "date": "2026-08-17",
+        "version": "1.1",
+        "title": "A team board library",
+        "summary": "Open the library to start a project from a board your team has already tried.",
+        "illustration": "board",
+        "changes": [
+          {
+            "kind": "New",
+            "text": "Choose a saved board when you create a project."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "template": {
+    "module": "../templates/changelog.tsx",
+    "id": "trellis.Changelog",
+    "version": "1.0.0",
+    "sha256": "2d87cb8819ebebf8c4bbf54a7540490a21d41d9fc97cb893dbe5a277bda467b1"
+  },
+  "values": {
+    "product": "Trellis",
+    "intro": "Field notes on what’s new in Trellis, from the board to the smallest task.",
+    "email": "https://trellis.example/notes/subscribe",
+    "rss": "https://trellis.example/notes/feed.xml",
+    "social": "https://trellis.example/community",
+    "handle": "@trellis",
+    "releases": [
+      {
+        "type": "feature",
+        "date": "2026-11-13",
+        "version": "2.6",
+        "title": "Tasks on repeat",
+        "summary": "Give a task a day of the week. When you finish it, the next one appears on your board with its checklist and owner in place.",
+        "illustration": "weekly",
+        "changes": [
+          {
+            "kind": "New",
+            "text": "Set a weekly repeat from any task’s due date."
+          },
+          {
+            "kind": "Improved",
+            "text": "Preview the next three dates before you save."
+          }
+        ]
+      },
+      {
+        "type": "small",
+        "date": "2026-10-30",
+        "version": "2.5.1",
+        "changes": [
+          {
+            "kind": "Fixed",
+            "text": "Dragging a card keeps its checklist in order."
+          },
+          {
+            "kind": "Improved",
+            "text": "Board search now finds cards by their old titles."
+          }
+        ]
+      },
+      {
+        "type": "notice",
+        "date": "2026-10-23",
+        "version": "2.5",
+        "title": "Calendar feeds are moving",
+        "summary": "Old feed links retire on 1 December. Open Calendar sync on your board and copy the new link into your calendar."
+      },
+      {
+        "type": "feature",
+        "date": "2026-10-09",
+        "version": "2.4",
+        "title": "Reusable project boards",
+        "summary": "Keep a clean copy of the board you reach for every project. A new board starts with its columns and checklists, ready for the next job.",
+        "illustration": "board",
+        "changes": [
+          {
+            "kind": "New",
+            "text": "Save any board as a team template from the board menu."
+          },
+          {
+            "kind": "Fixed",
+            "text": "Archived cards stay behind when you make a copy."
+          }
+        ]
+      },
+      {
+        "type": "small",
+        "date": "2026-09-25",
+        "version": "2.3.2",
+        "changes": [
+          {
+            "kind": "Improved",
+            "text": "Weekends are easier to spot on the timeline."
+          },
+          {
+            "kind": "Fixed",
+            "text": "Milestones keep their dates when a teammate changes time zones."
+          }
+        ]
+      },
+      {
+        "type": "small",
+        "date": "2026-09-11",
+        "version": "2.3.1",
+        "changes": [
+          {
+            "kind": "Fixed",
+            "text": "Long board names wrap in the project switcher."
+          }
+        ]
+      }
+    ]
+  }
+}
