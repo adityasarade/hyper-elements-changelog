@@ -5,7 +5,8 @@
   "scripts": {
     "build": "tsx scripts/build.tsx",
     "check": "hyper-elements check src templates",
-    "shots": "tsx scripts/shots.ts"
+    "design-json": "tsx scripts/design-json.tsx",
+    "builder-preview": "node scripts/builder-preview.mjs"
   },
   "dependencies": {
     "@hyper-elements/react": "0.5.0",

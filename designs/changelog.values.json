@@ -3,14 +3,34 @@
   "template": {
     "module": "../templates/changelog.tsx",
     "id": "trellis.Changelog",
-    "version": "1.0.0",
-    "sha256": "2d87cb8819ebebf8c4bbf54a7540490a21d41d9fc97cb893dbe5a277bda467b1"
+    "version": "2.0.0",
+    "sha256": "c97ba18a311db471f6941ea025a13e67c8536a66074e9476d9bb09409584dff4"
   },
   "values": {
     "product": "Trellis",
+    "wordmark": "Trellis",
+    "site": "https://trellis.example",
+    "nav": [
+      {
+        "text": "Product",
+        "href": "https://trellis.example/product"
+      },
+      {
+        "text": "Pricing",
+        "href": "https://trellis.example/pricing"
+      },
+      {
+        "text": "Changelog",
+        "href": "https://trellis.example/changelog"
+      },
+      {
+        "text": "Sign in",
+        "href": "https://trellis.example/login"
+      }
+    ],
     "intro": "Field notes on what’s new in Trellis, from the board to the smallest task.",
     "email": "https://trellis.example/notes/subscribe",
-    "rss": "https://trellis.example/notes/feed.xml",
+    "rss": "https://trellis.example/rss.xml",
     "social": "https://trellis.example/community",
     "handle": "@trellis",
     "releases": [

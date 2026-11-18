@@ -3,21 +3,40 @@
   "template": {
     "module": "../templates/changelog.tsx",
     "id": "trellis.Changelog",
-    "version": "1.0.0",
-    "sha256": "2d87cb8819ebebf8c4bbf54a7540490a21d41d9fc97cb893dbe5a277bda467b1"
+    "version": "2.0.0",
+    "sha256": "c97ba18a311db471f6941ea025a13e67c8536a66074e9476d9bb09409584dff4"
   },
   "values": {
-    "product": "Trellis",
+    "product": "Shelfmark",
+    "wordmark": "Shelfmark Studio",
+    "site": "https://shelfmark.example",
+    "nav": [
+      {
+        "text": "Product",
+        "href": "https://shelfmark.example/product"
+      },
+      {
+        "text": "Pricing",
+        "href": "https://shelfmark.example/pricing"
+      },
+      {
+        "text": "Changelog",
+        "href": "https://shelfmark.example/changelog"
+      },
+      {
+        "text": "Sign in",
+        "href": "https://shelfmark.example/login"
+      }
+    ],
     "intro": "Release notes for teams trying the new board library.",
-    "email": "https://trellis.example/notes/subscribe",
-    "rss": "https://trellis.example/notes/feed.xml",
-    "social": "https://trellis.example/community",
-    "handle": "@trellis",
+    "email": "https://shelfmark.example/notes/subscribe",
+    "rss": "https://feeds.shelfmark.example/rss.xml",
+    "social": "https://community.shelfmark.example/library",
+    "handle": "@shelfmark",
     "releases": [
       {
         "type": "notice",
         "date": "2026-08-24",
-        "version": "1.1.1",
         "title": "Saved boards are moving",
         "summary": "On 31 August, saved boards move into the Library tab. Your team keeps access through its existing links."
       },
@@ -27,7 +46,6 @@
         "version": "1.1",
         "title": "A team board library",
         "summary": "Open the library to start a project from a board your team has already tried.",
-        "illustration": "board",
         "changes": [
           {
             "kind": "New",
