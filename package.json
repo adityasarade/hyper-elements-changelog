@@ -4,9 +4,10 @@
   "type": "module",
   "scripts": {
     "build": "tsx scripts/build.tsx",
-    "check": "hyper-elements check src templates",
+    "check": "hyper-elements check src templates designs",
     "design-json": "tsx scripts/design-json.tsx",
-    "builder-preview": "node scripts/builder-preview.mjs"
+    "builder-preview": "node scripts/builder-preview.mjs",
+    "rss": "tsx scripts/rss.ts"
   },
   "dependencies": {
     "@hyper-elements/react": "0.5.0",
