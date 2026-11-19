@@ -112,8 +112,8 @@ The full history covers six releases from 11 September to 13 November. The short
 Copy [`src/trellis-changelog.tsx`](src/trellis-changelog.tsx) to `apps/website/examples/templates/`. It has the gallery's `meta` and renders with no props.
 
 We tested exactly that: the file, unchanged, in a local clone of the Hyper Elements site, through the site's own
-generator (`pnpm generate`) and dev server. It rendered with no diagnostics, and appears on `/templates/trellis-changelog` like
-the official designs:
+generator (`pnpm generate`) and dev server. It rendered with no diagnostics, and appears on `/templates/trellis-changelog` beside the
+official designs:
 
 ![The design on its page in a local build of the Hyper Elements template gallery, with its preview and source.](docs/in-the-gallery.jpg)
 
