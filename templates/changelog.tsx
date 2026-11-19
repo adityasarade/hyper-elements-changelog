@@ -3,13 +3,22 @@ import { prop } from "@hyper-elements/react";
 import { field, template } from "@hyper-elements/react/template";
 import TrellisChangelog, { example, hrefOf, type ChangelogProps } from "../src/trellis-changelog";
 
+const number = "(?:0|[1-9][0-9]*)";
+const prerelease = `(?:${number}|[0-9]*[A-Za-z-][0-9A-Za-z-]*)`;
+const build = "[0-9A-Za-z-]+";
 const versionOptions = {
   label: "Version",
-  maxLength: 14,
-  pattern: "^\\d+\\.\\d+(\\.\\d+)?$",
-  guidance: "Use two or three numbers, such as 2.6 or 2.6.1. The page adds the v.",
+  maxLength: 128,
+  pattern: `^${number}\\.${number}(?:\\.${number}(?:-${prerelease}(?:\\.${prerelease})*)?(?:\\+${build}(?:\\.${build})*)?)?$`,
+  guidance: "Use 2.6 or a full semantic version, such as 2.7.0-beta.1+build.5. The page adds the v.",
 };
 const dated = {
+  id: prop.text({
+    label: "Permalink ID",
+    pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+    maxLength: 160,
+    guidance: "Optional unique slug, such as board-library. Defaults to the version, or notice-YYYY-MM-DD for an unversioned notice. Keep a published ID stable.",
+  }),
   date: prop.date({
     label: "Publication date",
     required: true,
@@ -46,20 +55,22 @@ function checkDomains(values: ChangelogProps) {
     return url.hostname;
   }
   const allowed = new Set([host(values.site, "site"), host(values.social, "social"), host(values.rss, "rss")]);
+  if (values.newsletterHost) allowed.add(values.newsletterHost.toLowerCase());
   function check(link: ChangelogProps["email"], fieldName: string) {
     if (!allowed.has(host(link, fieldName))) {
       throw new Error(
-        `${fieldName} must link to a declared site, community or feed host (${[...allowed].join(", ")}).`,
+        `${fieldName} must link to a declared site, community, feed or newsletter host (${[...allowed].join(", ")}).`,
       );
     }
   }
   check(values.email, "email");
+  if (values.archive) check(values.archive, "archive");
   values.nav.forEach((item, i) => check(item.href, `nav[${i}].href`));
 }
 
 export default template({
   id: "trellis.Changelog",
-  version: "2.0.0",
+  version: "2.1.0",
   root: "Page",
   label: "Trellis changelog",
   guidance:
@@ -74,7 +85,7 @@ export default template({
       maxLength: 2048,
       pattern: "^https?://[^?#\\s]+$",
       guidance:
-        "The product home. The changelog lives at changelog under this URL. Navigation and signup may use the site, community or feed host.",
+        "The product home. Serve the changelog at changelog under this URL.",
     }),
     wordmark: prop.text({
       label: "Wordmark text",
@@ -99,6 +110,13 @@ export default template({
       guidance: "Introduce the product and what its release notes cover in one sentence.",
     }),
     email: prop.link({ label: "Email signup page", required: true }),
+    newsletterHost: prop.text({
+      label: "Newsletter host",
+      maxLength: 253,
+      pattern: "^(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\\.)*[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?$",
+      guidance: "If signup uses a separate host, declare its hostname here, such as letters.trellis.example.",
+    }),
+    archive: prop.link({ label: "Earlier releases URL", guidance: "Supply the URL of an existing archive to show the footer button." }),
     rss: prop.link({ label: "RSS feed", required: true }),
     social: prop.link({ label: "Community profile", required: true }),
     handle: prop.text({ label: "Profile handle", required: true, maxLength: 24, pattern: "^@[A-Za-z0-9_]+$" }),
@@ -158,6 +176,6 @@ export default template({
   example,
   render(values) {
     checkDomains(values);
-    return <TrellisChangelog {...values} />;
+    return TrellisChangelog(values);
   },
 });

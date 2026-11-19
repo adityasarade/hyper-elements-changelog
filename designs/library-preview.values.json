@@ -3,13 +3,12 @@
   "template": {
     "module": "../templates/changelog.tsx",
     "id": "trellis.Changelog",
-    "version": "2.0.0",
-    "sha256": "c97ba18a311db471f6941ea025a13e67c8536a66074e9476d9bb09409584dff4"
+    "version": "2.1.0",
+    "sha256": "eea13d9ccca400f837e5edddd9884e4c185e096192113e76be51db0cf0aa98bb"
   },
   "values": {
-    "product": "Shelfmark",
-    "wordmark": "Shelfmark Studio",
     "site": "https://shelfmark.example",
+    "wordmark": "Shelfmark Studio",
     "nav": [
       {
         "text": "Product",
@@ -28,8 +27,10 @@
         "href": "https://shelfmark.example/login"
       }
     ],
+    "product": "Shelfmark",
     "intro": "Release notes for teams trying the new board library.",
-    "email": "https://shelfmark.example/notes/subscribe",
+    "email": "https://letters.shelfmark.example/subscribe",
+    "newsletterHost": "letters.shelfmark.example",
     "rss": "https://feeds.shelfmark.example/rss.xml",
     "social": "https://community.shelfmark.example/library",
     "handle": "@shelfmark",
@@ -42,8 +43,9 @@
       },
       {
         "type": "feature",
+        "id": "v1-1",
         "date": "2026-08-17",
-        "version": "1.1",
+        "version": "1.1.0-beta.1+build.5",
         "title": "A team board library",
         "summary": "Open the library to start a project from a board your team has already tried.",
         "changes": [

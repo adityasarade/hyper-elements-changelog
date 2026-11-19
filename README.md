@@ -5,21 +5,22 @@ improved or fixed, and the big ones drawn.**
 
 ![The desktop and phone editions of Trellis, open to Tasks on repeat. Its three calendar leaves fall on consecutive Fridays.](docs/hero.png)
 
-Add a release by adding one object to a values file. The template checks it, puts it in date order and renders a static page. The same history supplies an RSS feed, so each subscriber gets the same release notes as a visitor.
+## Publish your changelog
 
-Trellis is a fictional planning tool for small teams. Its releases are invented.
-
-## Use it
-
-Install the locked dependencies and render the gallery example. The HTML and a plain-text edition land in `out/`. To reproduce the screenshots locally, install Chromium with `npx playwright install chromium` first.
+From a fresh clone, run these commands in the repository root. In the editor, set `values.site` to your product’s public base URL, update the navigation and follow links, and set `values.rss` to the full URL of your feed. Add a release by adding one object to `values.releases`.
 
 ```sh
 npm ci
-npm run build
-npx tsx scripts/rss.ts
+"${EDITOR:-vi}" designs/changelog.values.json
+npx hyper-elements render designs/changelog.values.json
+npm run rss
 ```
 
-The feed command reads `designs/changelog.values.json` and writes `out/rss.xml`. Serve the page at `changelog` under your `site` URL and the feed at the URL in `rss`. Clicking a date gives you the same permalink that subscribers receive.
+On your static host, place `out/designs/changelog.html` at `/changelog/index.html` and `out/rss.xml` at `/changelog/rss.xml` under the product’s base URL. Serve the index for requests to `/changelog`. Each linked date on the page and its RSS item point to the same release.
+
+Trellis is a fictional planning tool for small teams. The template checks and sorts its release notes so a team can publish the page and feed from one history.
+
+## Use the component
 
 To render the component in a build script, pass it a release list. Omitted props use the gallery example.
 
@@ -38,16 +39,7 @@ const { html } = await render(
 );
 ```
 
-For a data-only workflow, copy the shorter history and edit its `values`. Set `site`, `product`, the optional `wordmark`, navigation and follow links, then add your releases. The CLI can change individual fields too. These commands write `out/designs/team.html` and generate the matching `out/rss.xml`.
-
-```sh
-npx hyper-elements describe templates/changelog.tsx
-cp designs/library-preview.values.json designs/team.values.json
-npx hyper-elements design set designs/team.values.json 'intro=Changes to our team board library.'
-npx hyper-elements check designs/team.values.json
-npx hyper-elements render designs/team.values.json
-npx tsx scripts/rss.ts designs/team.values.json
-```
+To try the shorter Shelfmark history, render `designs/library-preview.values.json` with the same CLI and run `npm run rss -- designs/library-preview.values.json`. The feed command writes the selected history to `out/rss.xml`.
 
 ## One object, one release
 
@@ -80,15 +72,17 @@ kind: prop.choice(["New", "Improved", "Fixed"], {
 
 For a screenshot, set `screenshot` to `{ "src": "…", "width": 1200, "height": 800 }` using the image’s URL and actual pixel dimensions. Give it a short `screenshotAlt` description. The `field.image` accepts PNG, JPEG and WebP at least 800px wide, with a width-to-height ratio from 1 to 2.5. The framed image keeps its aspect ratio and takes precedence over a drawing.
 
-The version pattern accepts `2.6` and `2.6.1`. The rules check the page title, language, heading order, contrast, alternate text, link text and layout overflow. The template derives its allowed hosts from `site`, `rss` and `social` and checks navigation and signup destinations against them. The template and its gallery component are the two trusted modules listed in `package.json`.
+Each release can carry a permanent `id` made of lowercase letters, digits and single hyphens between words. Without it, version `2.6` gets `#v2-6`, and a versionless notice gets a fragment such as `#notice-2026-08-24`. Prereleases and build metadata work too, including `2.7.0-beta.1+build.5`. If two entries resolve to the same ID, the template asks for a unique one. To correct a published version or notice date, set `id` to its original fragment without the `#`.
+
+The rules check the page title, language, heading order, contrast, alternate text, link text and layout overflow. Navigation, signup and archive links must use the host of `site`, `social`, `rss`, or the optional `newsletterHost` (for example, `letters.shelfmark.example`). Set `archive` to an existing archive URL to show the “Earlier releases” button. The template and its gallery component are the two trusted modules listed in `package.json`.
 
 ## Edit it in Unlayer's builder
 
-Run `npm run design-json` and pass the contents of `out/trellis-changelog.design.json` to `editor.loadDesign(design)` in a web-mode Unlayer editor. Select a headline to edit it as a Heading. Dates, versions, summaries, colored labels and individual change sentences are Paragraph tools. The navigation is a Menu, the rules are Dividers, and the archive link is a Button. A supplied screenshot becomes an Image tool.
+Run `npm run design-json` and pass the contents of `out/trellis-changelog.design.json` to `editor.loadDesign(design)` in a web-mode Unlayer editor. Select a headline to edit it as a Heading. Dates, versions, summaries, colored labels and individual change sentences are Paragraph tools. The navigation is a Menu, the rules are Dividers, and a supplied archive link is a Button. A supplied screenshot becomes an Image tool.
 
 The sprig, stamp, notice icon and two feature illustrations export as five movable HTML blocks. The export writes theme values onto the individual tools. The page’s 870px breakpoint and inline-link hover treatments apply in the rendered page. Builder edits affect the exported design. Edit the values file to update both the page and RSS.
 
-While editing, the empty rail cells beside each change show the editor's "No content here" placeholder; they render empty.
+While editing, the empty rail cells beside each change show the editor's "No content here" placeholder. They render empty.
 
 ![Trellis changelog open in Unlayer’s web builder, with the release headline "Tasks on repeat" selected as an H2 Heading and its settings in the side panel.](docs/builder.jpg)
 
@@ -105,7 +99,7 @@ The full history covers six releases from 11 September to 13 November. The short
 | `npx hyper-elements render designs` | 2 designs, 0 errors, 0 warnings, 0 skipped |
 | `npx tsc --noEmit` | Exit 0, no output |
 | `npm run design-json` | 5 artwork blocks as HTML, 4 notes about styling |
-| `npx tsx scripts/rss.ts` | 6 RSS items, newest first |
+| `npm run rss` | 6 RSS items, newest first |
 
 ## Add it to the gallery
 

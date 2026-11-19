@@ -87,7 +87,7 @@ const theme = defineTheme({
 
 type Change = { kind: "New" | "Improved" | "Fixed"; text: string };
 type Screenshot = { src: string; width: number; height: number };
-export type Release = { date: string } & (
+export type Release = { date: string; id?: string } & (
   | {
       type: "feature";
       version: string;
@@ -109,6 +109,8 @@ export type ChangelogProps = {
   nav: { text: string; href: Href }[];
   intro: string;
   email: Href;
+  newsletterHost?: string;
+  archive?: Href;
   rss: Href;
   social: Href;
   handle: string;
@@ -138,7 +140,7 @@ export const example: ChangelogProps = {
   ],
   intro: "Field notes on what’s new in Trellis, from the board to the smallest task.",
   email: "https://trellis.example/notes/subscribe",
-  rss: "https://trellis.example/rss.xml",
+  rss: "https://trellis.example/changelog/rss.xml",
   social: "https://trellis.example/community",
   handle: "@trellis",
   releases: [
@@ -242,17 +244,19 @@ export function changelogUrl(site: string) {
 
 // Keep the original index for image field bindings, even when input is out of date order.
 export function releaseEntries(releases: Release[]) {
-  const used = new Map<string, number>();
+  const used = new Set<string>();
   return releases
-    .map((release, index) => ({ release, index }))
-    .sort((a, b) => b.release.date.localeCompare(a.release.date))
-    .map((entry) => {
-      const { release } = entry;
-      const base = release.version ? "v" + release.version.replaceAll(".", "-") : "notice-" + release.date;
-      const occurrence = (used.get(base) ?? 0) + 1;
-      used.set(base, occurrence);
-      return { ...entry, id: occurrence === 1 ? base : base + "-" + occurrence + "-entry" };
-    });
+    .map((release, index) => {
+      const id = release.id ?? (release.version
+        ? "v" + release.version.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-$/, "")
+        : "notice-" + release.date);
+      if (used.has(id)) {
+        throw new Error(`Duplicate release id "${id}" at releases[${index}]. Give one release a unique id.`);
+      }
+      used.add(id);
+      return { release, index, id };
+    })
+    .sort((a, b) => b.release.date.localeCompare(a.release.date));
 }
 
 function BrandMark() {
@@ -562,7 +566,7 @@ function ReleaseEntry({ entry, url, first }: { entry: Entry; url: string; first:
   const notice = release.type === "notice";
   const screenshot = release.type === "feature" ? release.screenshot : undefined;
   return (
-    <Section style={gutter}>
+    <Section id={id} style={gutter}>
       <Divider style={{ borderTop: first ? `2px solid ${INK}` : hairline }} />
       {release.type !== "small" && (
         <Row style={{ padding: notice ? [18, 0] : 0 }}>
@@ -580,7 +584,7 @@ function ReleaseEntry({ entry, url, first }: { entry: Entry; url: string; first:
                 <Text style={{ ...label, color: RUST }}>SERVICE NOTE</Text>
               </>
             )}
-            <Heading level={2} id={id} style={notice ? { fontSize: 28, mobile: { fontSize: 24 } } : undefined}>
+            <Heading level={2} style={notice ? { fontSize: 28, mobile: { fontSize: 24 } } : undefined}>
               {release.title}
             </Heading>
             <Text style={{ color: notice ? INK : QUIET, padding: screenshot ? [0, 0, 14] : 0 }}>
@@ -613,7 +617,7 @@ function ReleaseEntry({ entry, url, first }: { entry: Entry; url: string; first:
           const top = start ? 24 : i === 0 ? 16 : 9;
           const bottom = last ? 26 : 0;
           return (
-            <Row key={i} id={start ? id : undefined}>
+            <Row key={i}>
               <DateRail entry={start ? entry : undefined} url={url} top={top} bottom={bottom} />
               <Column
                 style={{
@@ -701,22 +705,24 @@ export default function TrellisChangelog(props: Partial<ChangelogProps> = {}) {
       <Section style={{ padding: [0, 20, 32] }}>
         <Divider style={{ borderTop: `2px solid ${INK}` }} />
         <Row style={{ padding: [18, 0, 0], alignItems: "center", gap: 10 }}>
-          <Column style={{ alignItems: "start" }}>
-            <Button
-              href={url + "/archive"}
-              style={{
-                color: INK,
-                backgroundColor: PAPER,
-                border: `1px solid ${INK}`,
-                borderRadius: 20,
-                fontSize: 15,
-                fontWeight: 600,
-                padding: [7, 15],
-              }}
-            >
-              ← Earlier releases
-            </Button>
-          </Column>
+          {props.archive && (
+            <Column style={{ alignItems: "start" }}>
+              <Button
+                href={props.archive}
+                style={{
+                  color: INK,
+                  backgroundColor: PAPER,
+                  border: `1px solid ${INK}`,
+                  borderRadius: 20,
+                  fontSize: 15,
+                  fontWeight: 600,
+                  padding: [7, 15],
+                }}
+              >
+                ← Earlier releases
+              </Button>
+            </Column>
+          )}
           <Column>
             <Text style={{ fontSize: 14, color: QUIET, textAlign: "right", mobile: { textAlign: "left" } }}>
               Published by {product}
